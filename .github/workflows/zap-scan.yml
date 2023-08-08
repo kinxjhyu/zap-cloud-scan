@@ -1,7 +1,7 @@
 name: ZAP-SCAN
 on:
 #   schedule:
-#     - cron: '0 2 * * sun' #
+#     - cron: '43 8 * * *' #
    workflow_dispatch:
       inputs:
          target:
