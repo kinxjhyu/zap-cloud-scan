@@ -1,0 +1,33 @@
+name: ZAP-FULL-SCAN
+on:
+   push:
+#   schedule:
+#     - cron: '43 8 * * *' #
+   workflow_dispatch:
+      inputs:
+         target:
+            description: 'target URL'     
+            required: true
+            default: ''
+
+jobs:
+  zap_scan:
+    runs-on: ubuntu-latest
+    name: Scan the webapplication
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: main
+      - name: ZAP Scan
+        uses: zaproxy/action-full-scan@v0.2.0
+        with:
+          token: ${{ secrets.MY_GITHUB_TOKEN }}
+          docker_name: 'owasp/zap2docker-stable'
+          target: "${{ github.event.inputs.target }}"
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'
+
+          http_login_form: '/login'
+          http_login_http_username: ${{ secrets.ZAP_USER }}
+          http_login_http_password: ${{ secrets.ZAP_USER_PW }}
