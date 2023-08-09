@@ -1,5 +1,5 @@
 name: ZAP-SCAN
-on:
+on: push
 #   schedule:
 #     - cron: '43 8 * * *' #
    workflow_dispatch:
@@ -25,4 +25,4 @@ jobs:
           docker_name: 'owasp/zap2docker-stable'
           target: "${{ github.event.inputs.target }}"
           rules_file_name: '.zap/rules.tsv'
-          cmd_options: '-a'
+          cmd_options: '-a -z "-config view.locale=ko_KR"'
