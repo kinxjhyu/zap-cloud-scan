@@ -3,12 +3,12 @@ on:
    push:
 #   schedule:
 #     - cron: '43 8 * * *' #
-   workflow_dispatch:
-      inputs:
-         target:
-            description: 'target URL'     
-            required: true
-            default: ''
+#   workflow_dispatch:
+#      inputs:
+#         target:
+#            description: 'target URL'     
+#            required: true
+#            default: ''
 
 jobs:
   zap_scan:
@@ -24,6 +24,7 @@ jobs:
         with:
           token: ${{ secrets.MY_GITHUB_TOKEN }}
           docker_name: 'owasp/zap2docker-stable'
-          target: "${{ github.event.inputs.target }}"
+          #target: "${{ github.event.inputs.target }}"
+          target: "https://console.ixcloud.net"
           rules_file_name: '.zap/rules.tsv'
           cmd_options: '-a'
