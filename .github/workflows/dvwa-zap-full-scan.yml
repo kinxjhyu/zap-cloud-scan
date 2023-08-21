@@ -9,7 +9,6 @@ on:
             description: 'target URL'     
             required: true
             default: ''
-
 jobs:
   build:
     - name: Install OpenVPN
@@ -21,7 +20,6 @@ jobs:
         echo "${{ secrets.CLOUDOP_OVPN }}" >> cloudop.ovpn
         sudo openvpn --config cloudop.ovpn &
         sleep 10
-
   zap_scan:
     runs-on: ubuntu-latest
     name: Scan the webapplication
@@ -38,7 +36,6 @@ jobs:
           target: "${{ github.event.inputs.target }}"
           rules_file_name: '.zap/rules.tsv'
           cmd_options: '-a'
-
           http_login_form: '/login.php'
           http_login_http_username: ${{ secrets.DVWA_ZAP_USER }}
           http_login_http_password: ${{ secrets.DVWA_ZAP_USER_PW }}
