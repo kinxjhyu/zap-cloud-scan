@@ -10,20 +10,19 @@ on:
             required: true
             default: ''
 jobs:
-  build:
-    - name: Install OpenVPN
-      run: |
-        sudo apt update
-        sudo apt install openvpn -y
-    - name: Connect OpenVPN
-      run: |
-        echo "${{ secrets.CLOUDOP_OVPN }}" >> cloudop.ovpn
-        sudo openvpn --config cloudop.ovpn &
-        sleep 10
   zap_scan:
     runs-on: ubuntu-latest
     name: Scan the webapplication
     steps:
+      - name: Install OpenVPN
+        run: |
+          sudo apt update
+          sudo apt install openvpn -y
+      - name: Connect OpenVPN
+        run: |
+          echo "${{ secrets.CLOUDOP_OVPN }}" >> cloudop.ovpn
+          sudo openvpn --config cloudop.ovpn &
+          sleep 10
       - name: Checkout
         uses: actions/checkout@v2
         with:
