@@ -1,0 +1,44 @@
+name: ZAP-FULL-SCAN
+on:
+   push:
+#   schedule:
+#     - cron: '43 8 * * *' #
+   workflow_dispatch:
+      inputs:
+         target:
+            description: 'target URL'     
+            required: true
+            default: ''
+
+jobs:
+  build:
+    - name: Install OpenVPN
+      run: |
+        sudo apt update
+        sudo apt install openvpn -y
+    - name: Connect OpenVPN
+      run: |
+        echo "${{ secrets.CLOUDOP_OVPN }}" >> cloudop.ovpn
+        sudo openvpn --config cloudop.ovpn &
+        sleep 10
+
+  zap_scan:
+    runs-on: ubuntu-latest
+    name: Scan the webapplication
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: main
+      - name: ZAP Scan
+        uses: zaproxy/action-full-scan@v0.2.0
+        with:
+          token: ${{ secrets.MY_GITHUB_TOKEN }}
+          docker_name: 'owasp/zap2docker-stable'
+          target: "${{ github.event.inputs.target }}"
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'
+
+          http_login_form: '/login.php'
+          http_login_http_username: ${{ secrets.DVWA_ZAP_USER }}
+          http_login_http_password: ${{ secrets.DVWA_ZAP_USER_PW }}
