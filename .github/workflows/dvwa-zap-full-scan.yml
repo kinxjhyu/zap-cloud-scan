@@ -1,4 +1,4 @@
-name: ZAP-FULL-SCAN
+name: DVWA-ZAP-FULL-SCAN
 on:
    push:
 #   schedule:
